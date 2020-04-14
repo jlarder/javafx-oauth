@@ -19,6 +19,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import com.github.jlarder.javafx.oauth.controllers.GoogleController;
+import com.github.jlarder.javafx.oauth.oauth2.Token;
+import javafx.application.Platform;
+import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
@@ -29,11 +32,20 @@ public class YouTubeExampleController extends GoogleController {
     
     @FXML
     private AnchorPane pane;
+    
+    @FXML
+    private Label label;
 
     
     @Override
     protected Node getNode() {
         return pane;
+    }
+
+    
+    @Override
+    protected void onGetToken(Token token) {
+        label.setText("Access Token: " + token.getAccessToken());
     }
     
 }

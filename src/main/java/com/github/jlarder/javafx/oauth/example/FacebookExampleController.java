@@ -16,8 +16,10 @@
 package com.github.jlarder.javafx.oauth.example;
 
 import com.github.jlarder.javafx.oauth.controllers.FacebookController;
+import com.github.jlarder.javafx.oauth.oauth2.Token;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -28,11 +30,20 @@ public class FacebookExampleController extends FacebookController {
     
     @FXML
     private AnchorPane pane;
+    
+    @FXML
+    private Label label;
 
     
     @Override
     protected Node getNode() {
         return pane;
+    }
+
+    
+    @Override
+    protected void onGetToken(Token token) {
+        label.setText("Access Token: " + token.getAccessToken());
     }
     
 }

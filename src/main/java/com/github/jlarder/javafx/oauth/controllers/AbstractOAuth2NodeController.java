@@ -44,22 +44,22 @@ public abstract class AbstractOAuth2NodeController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        getToken();
+    }
+
+    
+    public void getToken() {
         if(getNode() != null) getNode().setDisable(true);              
         oauth2Service.getToken(getProvider(), getOAuth2Properties(),
                 (Token t, TokenError error) -> {                             
             if(error == null) {
                 if(getNode() != null) getNode().setDisable(false);
-                token = t;                                                 
+                token = t; 
+                onGetToken(token);
             } else {
                 LOG.error("Error get token " + error);
             }
         });
-    }
-    
-    
-    public Token getToken() {
-        if(token != null && token.isExpired()) refreshToken();
-        return token;
     }
     
     
@@ -70,6 +70,7 @@ public abstract class AbstractOAuth2NodeController implements Initializable {
              if(error == null) {
                 if(getNode() != null) getNode().setDisable(false);
                 token = t;
+                onGetToken(token);
             } else {
                 LOG.error("Error refresh token " + error);
             }
@@ -89,5 +90,8 @@ public abstract class AbstractOAuth2NodeController implements Initializable {
     
     
     protected abstract String getProvider();
+    
+    
+    protected abstract void onGetToken(Token token);
     
 }
